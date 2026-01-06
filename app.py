@@ -16,7 +16,13 @@ st.markdown("""
 """)
 
 # --- CONFIGURATION ---
-DATA_FILE = "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv"
+import zipfile
+
+DATA_FILE = "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.zip"
+
+with zipfile.ZipFile(DATA_FILE, 'r') as zip_ref:
+    zip_ref.extractall(".")
+
 
 # --- SIDEBAR: SETTINGS ---
 st.sidebar.header("1. Settings")
