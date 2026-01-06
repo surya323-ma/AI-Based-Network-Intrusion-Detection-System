@@ -18,11 +18,8 @@ This project demonstrates how to use **Machine Learning (Random Forest)** and **
 2. **Train Model:** Click the "Train AI Model" button. The system loads the `Friday-WorkingHours...` dataset automatically.
 3. **Simulate:** Click "Simulate Random Packet" to pick a real network packet from the test set.
 4. **Analyze:** See if the model flags it as **BENIGN** or **DDoS**, and ask Grok to explain why.
-
-## 📂 Files
-- `app.py`: The main Python application code.
-- `requirements.txt`: List of libraries used.
-- `Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv`: The dataset (CIC-IDS2017 subset).
+## Deploy link
+      https://network-intrusion-detection-system0.streamlit.app/
 
 ## 🎓 About
 Created for a university cybersecurity project to demonstrate the integration of traditional ML and LLMs in security operations."# AI-Based-Network-Intrusion-Detection-System" 
