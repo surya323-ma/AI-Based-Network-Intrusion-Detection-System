@@ -16,12 +16,8 @@ st.markdown("""
 """)
 
 # --- CONFIGURATION ---
-import zipfile
+DATA_FILE = "dataset_sdn.csv"
 
-DATA_FILE = "Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.zip"
-
-with zipfile.ZipFile(DATA_FILE, 'r') as zip_ref:
-    zip_ref.extractall(".")
 
 
 # --- SIDEBAR: SETTINGS ---
@@ -41,28 +37,49 @@ def load_data(filepath):
         return df
     except FileNotFoundError:
         return None
-
 def train_model(df):
-    features = ['Flow Duration', 'Total Fwd Packets', 'Total Backward Packets', 
-                'Total Length of Fwd Packets', 'Fwd Packet Length Max', 
-                'Flow IAT Mean', 'Flow IAT Std', 'Flow Packets/s']
-    target = 'Label'
+    features = [
+        'pktcount',
+        'bytecount',
+        'dur',
+        'flows',
+        'pktperflow',
+        'byteperflow',
+        'pktrate',
+        'tx_bytes',
+        'rx_bytes',
+        'tot_kbps'
+    ]
     
+    target = 'label'
+
+    # Check missing columns
     missing_cols = [c for c in features if c not in df.columns]
     if missing_cols:
         st.error(f"Missing columns in CSV: {missing_cols}")
         return None, 0, [], None, None
 
+    # Split features & target
     X = df[features]
     y = df[target]
-    
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-    
-    clf = RandomForestClassifier(n_estimators=10, max_depth=10, random_state=42)
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.3, random_state=42
+    )
+
+    # Train model
+    clf = RandomForestClassifier(
+        n_estimators=100,
+        max_depth=10,
+        random_state=42
+    )
     clf.fit(X_train, y_train)
-    
+
+    # Accuracy
     score = accuracy_score(y_test, clf.predict(X_test))
+
     return clf, score, features, X_test, y_test
+
 
 # --- APP LOGIC ---
 df = load_data(DATA_FILE)
